@@ -1,0 +1,13 @@
+var R=require("../../chunks/ssr/[turbopack]_runtime.js")("server/app/community-rules/page.js")
+R.c("server/chunks/ssr/[root-of-the-server]__05w9l-o._.js")
+R.c("server/chunks/ssr/0eq2_next_dist_esm_build_templates_app-page_0tn8pa0.js")
+R.c("server/chunks/ssr/[root-of-the-server]__1tpyzac._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__0zqwj1y._.js")
+R.c("server/chunks/ssr/ThePublicWire_0n697k5._.js")
+R.c("server/chunks/ssr/0eq2_next_dist_client_components_0kzd3cd._.js")
+R.c("server/chunks/ssr/0eq2_next_dist_client_components_builtin_forbidden_1wvzyki.js")
+R.c("server/chunks/ssr/0eq2_next_dist_client_components_builtin_unauthorized_11oedte.js")
+R.c("server/chunks/ssr/0eq2_next_dist_client_components_builtin_global-error_0_3z7is.js")
+R.c("server/chunks/ssr/ThePublicWire__next-internal_server_app_community-rules_page_actions_0gp21h8.js")
+R.m(64286)
+module.exports=R.m(64286).exports

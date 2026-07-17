@@ -1,0 +1,3 @@
+import Link from "next/link";
+import { topics } from "@/data/topics";
+export default function DiscussionsPage() { return <main className="page-shell"><p className="eyebrow">DISCUSSIONS</p><h1 className="page-title">Talk around the topic, not under the post.</h1><p className="lead">Separate spaces keep conversations organized and make moderation possible. Sources and thoughtful analysis are welcome; abuse and private information are not.</p><div className="discussion-grid">{topics.map((topic) => <Link href={`/topics/${topic.id}`} className="panel" key={topic.id}><p className="eyebrow">{topic.kind}</p><h2>{topic.title}</h2><p>{topic.discussionCount} people in this discussion space</p><span>Open space →</span></Link>)}</div></main>; }
