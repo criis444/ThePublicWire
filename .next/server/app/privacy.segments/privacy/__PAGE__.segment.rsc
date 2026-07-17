@@ -1,5 +1,0 @@
-1:"$Sreact.fragment"
-2:I[89471,["/_next/static/chunks/41h5ac7tpe3vc.js","/_next/static/chunks/1o2hw0y1fgac8.js","/_next/static/chunks/3de-ez14ofqn-.js"],"OutletBoundary"]
-3:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"page-shell policy","children":[["$","p",null,{"className":"eyebrow","children":"PRIVACY"}],["$","h1",null,{"className":"page-title","children":"Privacy, plainly stated."}],["$","h2",null,{"children":"Our direction"}],["$","p",null,{"children":"Collect only what is needed to run accounts, protect the service, and support requested features. Do not sell personal data. Do not display private notes publicly."}],["$","h2",null,{"children":"Before launch"}],["$","p",null,{"children":"This page is a product draft, not a final legal privacy policy. A qualified privacy lawyer must review the final policy, data practices, vendors, retention periods, and user rights before public launch."}]]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"ZZf3GZ0oiQ-kmwubAOyWD"}
-4:null

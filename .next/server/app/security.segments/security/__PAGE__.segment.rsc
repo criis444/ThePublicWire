@@ -1,5 +1,0 @@
-1:"$Sreact.fragment"
-2:I[89471,["/_next/static/chunks/41h5ac7tpe3vc.js","/_next/static/chunks/1o2hw0y1fgac8.js","/_next/static/chunks/3de-ez14ofqn-.js"],"OutletBoundary"]
-3:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"page-shell policy","children":[["$","p",null,{"className":"eyebrow","children":"SECURITY"}],["$","h1",null,{"className":"page-title","children":"Safety is part of the product."}],["$","h2",null,{"children":"Platform commitments"}],["$","p",null,{"children":"Use secure account authentication, protect data in transit, limit access to sensitive tools, review uploads, and give people a way to report problems."}],["$","h2",null,{"children":"Before launch"}],["$","p",null,{"children":"Security needs a threat model, professional testing, moderation operations, incident response, and third-party vendor reviews. This page records the intent; it is not a security guarantee."}]]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"ZZf3GZ0oiQ-kmwubAOyWD"}
-4:null
