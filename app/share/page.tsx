@@ -67,9 +67,9 @@ export default function SharePage() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    alert("You must be signed in.");
-    return;
-  }
+  window.location.href = "/sign-in";
+  return;
+}
 
   console.log("ABOUT TO INSERT POST", {
     user: user.id,
