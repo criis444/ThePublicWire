@@ -60,67 +60,82 @@ export default function SharePage() {
   const selected = choices.find((choice) => choice.id === type);
 
   async function submitPost(event: React.FormEvent) {
-    event.preventDefault();
+  event.preventDefault();
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-    if (!user) {
-      alert("You must be signed in.");
-      return;
-    }
-
-    const { error } = await supabase
-      .from("now_posts")
-      .insert({
-        title,
-        summary: description,
-
-        // Required database fields
-        category: "General",
-        video_url: "",
-        source: "",
-        evidence: "",
-        media_url: "",
-        media_type: "text",
-        media_source: "",
-
-        approved_by: null,
-
-        source_url: sourceUrl,
-
-        status: "analyzing",
-        verification_level: "pending",
-
-        ai_checked: false,
-        ai_confidence: 0,
-
-        human_verified: false,
-
-        author_id: user.id,
-
-        post_origin: "user",
-        publish_mode: "ai_review",
-
-        ai_summary: "",
-      });
-
-    if (error) {
-      console.error("SUBMIT ERROR:", error);
-      alert(error.message);
-      return;
-    }
-
-    console.log("POST CREATED SUCCESSFULLY");
-
-    setSent(true);
-
-    setTitle("");
-    setSourceUrl("");
-    setDescription("");
-    setType(null);
+  if (!user) {
+    alert("You must be signed in.");
+    return;
   }
+
+  console.log("ABOUT TO INSERT POST", {
+    user: user.id,
+    title,
+    sourceUrl,
+    description,
+  });
+
+  const { data, error } = await supabase
+    .from("now_posts")
+    .insert({
+      title,
+      summary: description,
+
+      category: "General",
+
+      video_url: "",
+      source: "",
+      evidence: "",
+
+      approved_by: null,
+
+      media_url: "",
+      media_type: "text",
+      media_source: "",
+
+      source_url: sourceUrl,
+
+      status: "analyzing",
+      verification_level: "pending",
+
+      ai_checked: false,
+      ai_confidence: 0,
+
+      human_verified: false,
+
+      author_id: user.id,
+
+      post_origin: "user",
+      publish_mode: "ai_review",
+
+      ai_summary: "",
+    })
+    .select();
+
+  console.log("INSERT RESULT:", {
+    data,
+    error,
+  });
+
+  if (error) {
+    alert(
+      "DATABASE ERROR:\n\n" + error.message
+    );
+    return;
+  }
+
+  alert("POST CREATED SUCCESSFULLY");
+
+  setSent(true);
+
+  setTitle("");
+  setSourceUrl("");
+  setDescription("");
+  setType(null);
+}
 
   if (sent) {
     return (
