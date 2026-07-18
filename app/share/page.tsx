@@ -66,6 +66,8 @@ export default function SharePage() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  console.log("USER ID:", user?.id);
+
   console.log("CURRENT USER:", user);
 
   if (!user) {
@@ -118,7 +120,7 @@ export default function SharePage() {
     .select();
 
   console.log(
-  "INSERT RESULT:",
+  "INSERT RESULT FULL:",
   JSON.stringify(
     {
       data,
