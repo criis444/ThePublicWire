@@ -32,7 +32,7 @@ Deno.serve(async () => {
 
       xml = await response.text();
 
-    } catch (error) {
+    } catch {
       console.log("FETCH ERROR:", feed.source);
       continue;
     }
@@ -49,14 +49,19 @@ Deno.serve(async () => {
 
       const title =
         content.match(/<title>(.*?)<\/title>/)?.[1]
-        ?.replace("<![CDATA[", "")
-        .replace("]]>", "")
+          ?.replace("<![CDATA[", "")
+          .replace("]]>", "")
+          .trim()
         ?? "";
 
 
-      const sourceUrl =
+      const rawSourceUrl =
         content.match(/<link>(.*?)<\/link>/)?.[1]
         ?? "";
+
+
+      // Remove tracking parameters so duplicates are detected
+      const cleanUrl = rawSourceUrl.split("?")[0];
 
 
       let image =
@@ -69,15 +74,18 @@ Deno.serve(async () => {
         "";
 
 
-      if (!image && sourceUrl) {
+      if (!image && cleanUrl) {
         try {
-          const page = await fetch(sourceUrl, {
+
+          const page = await fetch(cleanUrl, {
             headers: {
               "User-Agent": "Mozilla/5.0",
             },
           });
 
+
           const html = await page.text();
+
 
           image =
             html.match(
@@ -96,17 +104,20 @@ Deno.serve(async () => {
       }
 
 
-      if (!title || !sourceUrl) continue;
+      if (!title || !cleanUrl) continue;
 
 
+      // Prevent duplicate stories
       const { data: existing } = await supabase
         .from("now_posts")
         .select("id")
-        .eq("source_url", sourceUrl)
+        .eq("source_url", cleanUrl)
         .maybeSingle();
 
 
-      if (existing) continue;
+      if (existing) {
+        continue;
+      }
 
 
       const { error } = await supabase
@@ -118,11 +129,14 @@ Deno.serve(async () => {
           summary:
             "Automatically collected from a trusted public source.",
 
-          source: feed.source,
+          source:
+            feed.source,
 
-          source_url: sourceUrl,
+          source_url:
+            cleanUrl,
 
-          media_url: image,
+          media_url:
+            image,
 
           media_type:
             image ? "image" : "",
@@ -156,6 +170,11 @@ Deno.serve(async () => {
 
       if (!error) {
         inserted++;
+      } else {
+        console.log(
+          "INSERT ERROR:",
+          error.message
+        );
       }
 
     }
@@ -167,8 +186,8 @@ Deno.serve(async () => {
       inserted,
     }),
     {
-      headers:{
-        "Content-Type":"application/json",
+      headers: {
+        "Content-Type": "application/json",
       },
     }
   );
