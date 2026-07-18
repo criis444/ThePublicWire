@@ -65,6 +65,7 @@ export default function SharePage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  console.log("CURRENT USER:", user);
 
   if (!user) {
   window.location.href = "/sign-in";
