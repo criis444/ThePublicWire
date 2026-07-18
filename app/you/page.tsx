@@ -13,13 +13,11 @@ export default function YouPage() {
 
   const [userEmail, setUserEmail] = useState("");
   const [displayName, setDisplayName] = useState("");
+  const [editing, setEditing] = useState(false);
   const [profileLoading, setProfileLoading] = useState(true);
 
   useEffect(() => {
-    setNote(
-      window.localStorage.getItem(NOTES_KEY) ?? ""
-    );
-
+    setNote(localStorage.getItem(NOTES_KEY) ?? "");
     loadProfile();
   }, []);
 
@@ -35,15 +33,13 @@ export default function YouPage() {
 
     setUserEmail(user.email ?? "");
 
-    const { data: profile } = await supabase
+    const { data } = await supabase
       .from("profiles")
       .select("display_name")
       .eq("id", user.id)
       .single();
 
-    if (profile?.display_name) {
-      setDisplayName(profile.display_name);
-    }
+    setDisplayName(data?.display_name ?? "");
 
     setProfileLoading(false);
   }
@@ -61,157 +57,157 @@ export default function YouPage() {
         display_name: displayName,
       })
       .eq("id", user.id);
+
+    setEditing(false);
   }
 
   function saveNote() {
-    window.localStorage.setItem(
-      NOTES_KEY,
-      note
-    );
-
+    localStorage.setItem(NOTES_KEY, note);
     setSaved(true);
 
-    window.setTimeout(() => {
+    setTimeout(() => {
       setSaved(false);
-    }, 1600);
+    }, 1500);
   }
 
+
   return (
-    <main className="page-shell narrow">
+    <main className="page-shell profile-page">
 
-      <p className="eyebrow">
-        YOU
-      </p>
+      <section className="profile-hero">
 
-      <h1 className="page-title">
-        Your wire.
-      </h1>
-
-      <p className="lead">
-        Track what matters, keep private notes,
-        and return to sources without turning
-        your account into a public profile.
-      </p>
-
-
-      <section className="account-card">
-
-        <div className="avatar">
+        <div className="profile-avatar">
           {displayName
-            ? displayName.charAt(0).toUpperCase()
+            ? displayName[0].toUpperCase()
             : "TP"}
         </div>
 
+        {profileLoading ? (
+          <h1>Loading...</h1>
+        ) : (
+          <>
+            <h1>
+              {displayName || "New Contributor"}
+            </h1>
+
+            <p className="profile-email">
+              {userEmail}
+            </p>
+
+            <p className="profile-bio">
+              Tracking stories, sources, and verified information.
+            </p>
+
+            <button
+              className="primary-button"
+              onClick={() => setEditing(!editing)}
+            >
+              {editing ? "Close" : "Edit Profile"}
+            </button>
+
+          </>
+        )}
+
+      </section>
+
+
+      {editing && (
+        <section className="profile-editor">
+
+          <label>
+            Display name
+
+            <input
+              value={displayName}
+              onChange={(e) =>
+                setDisplayName(e.target.value)
+              }
+              placeholder="Choose your display name"
+            />
+
+          </label>
+
+          <button
+            className="primary-button"
+            onClick={saveProfile}
+          >
+            Save Changes
+          </button>
+
+        </section>
+      )}
+
+
+
+      <section className="profile-stats">
+
         <div>
-          <p className="eyebrow">
-            ACCOUNT
-          </p>
+          <strong>0</strong>
+          <span>Posts</span>
+        </div>
 
-          {profileLoading ? (
-            <h2>
-              Loading...
-            </h2>
-          ) : (
-            <>
-              <h2>
-                {displayName || "Set your display name"}
-              </h2>
+        <div>
+          <strong>0</strong>
+          <span>Saved</span>
+        </div>
 
-              <p>
-                {userEmail}
-              </p>
-
-              {!displayName && (
-                <input
-                  value={displayName}
-                  onChange={(e) =>
-                    setDisplayName(e.target.value)
-                  }
-                  placeholder="Display name"
-                />
-              )}
-
-              <button
-                className="primary-button"
-                onClick={saveProfile}
-              >
-                Save profile
-              </button>
-            </>
-          )}
+        <div>
+          <strong>{topics.length}</strong>
+          <span>Topics</span>
         </div>
 
       </section>
 
 
+
       <section className="board-section">
 
-        <div>
-          <p className="eyebrow">
-            YOUR BOARD
-          </p>
-
-          <h2>
-            Keep the thread.
-          </h2>
-        </div>
-
-        <p>
-          Save a question, source to revisit,
-          or detail to check later.
+        <p className="eyebrow">
+          YOUR BOARD
         </p>
 
-        <label className="note-label">
-          Private note
+        <h2>
+          Keep the thread.
+        </h2>
 
-          <textarea
-            value={note}
-            onChange={(event) =>
-              setNote(event.target.value)
-            }
-            placeholder="Save something to revisit."
-          />
-        </label>
+        <textarea
+          value={note}
+          onChange={(e) =>
+            setNote(e.target.value)
+          }
+          placeholder="Save a source, question, or investigation..."
+        />
 
         <button
-          type="button"
           className="primary-button"
           onClick={saveNote}
         >
-          {saved ? "Saved" : "Save note"}
+          {saved ? "Saved" : "Save Note"}
         </button>
 
       </section>
 
 
+
       <section className="saved-topics">
 
         <p className="eyebrow">
-          START TRACKING
+          FOLLOWING
         </p>
 
         <h2>
-          Topics you can follow
+          Topics
         </h2>
 
         {topics.map((topic) => (
           <Link
-            className="saved-topic"
-            href={`/topics/${topic.id}`}
             key={topic.id}
+            href={`/topics/${topic.id}`}
+            className="saved-topic"
           >
-            <span>
-              {topic.kind}
-            </span>
-
-            <strong>
-              {topic.title}
-            </strong>
-
-            <small>
-              {topic.updated}
-            </small>
-
+            <span>{topic.kind}</span>
+            <strong>{topic.title}</strong>
+            <small>{topic.updated}</small>
           </Link>
         ))}
 
